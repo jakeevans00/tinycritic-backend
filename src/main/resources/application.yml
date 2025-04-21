@@ -1,0 +1,12 @@
+spring:
+  graphql:
+    graphiql:
+      enabled: true
+  schema:
+    printer:
+      enabled: true
+  data:
+    mongodb:
+      changeCaptureEnabled: false
+      database: ${MONGO_DATABASE}
+      uri: ${MONGO_URL}
