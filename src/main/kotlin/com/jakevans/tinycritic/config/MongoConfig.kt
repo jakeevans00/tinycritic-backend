@@ -1,6 +1,8 @@
 package com.jakevans.tinycritic.config
 
+import com.jakevans.tinycritic.dao.SpotDao
 import com.jakevans.tinycritic.dao.UserDao
+import com.jakevans.tinycritic.dto.Spot
 import com.jakevans.tinycritic.dto.User
 import com.mongodb.*
 import com.mongodb.client.MongoClient
@@ -46,15 +48,28 @@ class MongoConfig {
 
     @Bean
     fun userMongoCollection(mongoClient: MongoClient): MongoCollection<User> {
-        val mongoCollection = mongoClient.getDatabase(database)
+        val userMongoCollection = mongoClient.getDatabase(database)
             .getCollection(UserDao.COLLECTION_NAME, User::class.java)
 
         if (refreshIndex) {
-            mongoCollection.dropIndexes()
-            mongoCollection.createIndex(Document("email", 1))
-            mongoCollection.createIndex(Document("createdAt", -1))
+            userMongoCollection.dropIndexes()
+            userMongoCollection.createIndex(Document("email", 1))
+            userMongoCollection.createIndex(Document("createdAt", -1))
         }
 
-        return mongoCollection
+        return userMongoCollection
+    }
+
+    @Bean
+    fun spotMongoCollection(mongoClient: MongoClient): MongoCollection<Spot> {
+        val spotMongoCollection = mongoClient.getDatabase(database)
+            .getCollection(SpotDao.COLLECTION_NAME, Spot::class.java)
+
+        if (refreshIndex) {
+            spotMongoCollection.dropIndexes()
+            spotMongoCollection.createIndex(Document("name", 1))
+        }
+
+        return spotMongoCollection
     }
 }

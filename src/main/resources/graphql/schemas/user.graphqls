@@ -18,5 +18,5 @@ type Mutation {
 }
 
 type Query {
-    _dummy: String
+    userById(id: ID!): User
 }
